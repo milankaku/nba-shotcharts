@@ -2,9 +2,9 @@ import api
 
 
 def main():
-    shot_data = api.ShotData()
-    shot_chart = shot_data.get_shot_data()
-    shot_data.plot_data(shot_chart.LOC_X, shot_chart.LOC_Y)
+    # Example player_ids = [Jimmy Butler: 202710, JJ Redick: 203584]
+    shots = api.ShotChart(player_id=203584)
+    shots.plot_shots()
 
 if __name__ == "__main__":
     main()

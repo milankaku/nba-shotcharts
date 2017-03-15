@@ -1,5 +1,4 @@
 # nbaheatmaps
-Create heat maps for NBA players
 
 ## What is it
 

@@ -1,6 +1,7 @@
 import requests
 import pandas
 import matplotlib.pyplot as plt
+import seaborn
 
 headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
                          '(KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
@@ -28,3 +29,11 @@ class ShotData(object):
         data_headers = self.json_data['resultSets'][0]['headers']
         data_frame = pandas.DataFrame(data=shot_data, columns=data_headers)
         return data_frame
+
+
+    def plot_data(self, x, y):
+        seaborn.set_style("white")
+        seaborn.set_color_codes()
+        plt.figure(figsize=(12, 10))
+        plt.scatter(x, y)
+        plt.show()

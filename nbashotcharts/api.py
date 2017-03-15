@@ -22,14 +22,12 @@ class ShotData(object):
         self.response = requests.get(self.url, headers=headers)
         self.json_data = self.response.json()
 
-
     def get_shot_data(self):
         """Returns pandas DataFrame of shot chart data for a certain player"""
         shot_data = self.json_data['resultSets'][0]['rowSet']
         data_headers = self.json_data['resultSets'][0]['headers']
         data_frame = pandas.DataFrame(data=shot_data, columns=data_headers)
         return data_frame
-
 
     def plot_data(self, x, y):
         seaborn.set_style("white")

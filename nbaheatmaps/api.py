@@ -3,6 +3,8 @@ import pandas
 import matplotlib.pyplot as plt
 import seaborn
 
+from matplotlib.patches import Arc, Rectangle, Circle
+
 headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
                          '(KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36'}
 
@@ -22,13 +24,15 @@ class ShotChart(object):
 
         self.response = requests.get(self.url, headers=headers)
         self.json_data = self.response.json()
+        seaborn.set_style("white")
+        seaborn.set_color_codes()
 
     def plot_shots(self):
         data_frame = self.get_shot_data()
-        seaborn.set_style("white")
-        seaborn.set_color_codes()
-        plt.figure(figsize=(12, 10))
+        plt.figure(figsize=(12, 11))
         plt.scatter(data_frame.LOC_X, data_frame.LOC_Y)
+        self.draw_court()
+        plt.ylim(422.5, -47.5)
         plt.show()
 
     def get_shot_data(self):
@@ -37,3 +41,23 @@ class ShotChart(object):
         data_headers = self.json_data['resultSets'][0]['headers']
         data_frame = pandas.DataFrame(data=shot_data, columns=data_headers)
         return data_frame
+
+    def draw_court(self, ax=None):
+        if ax is None:
+            ax = plt.gca()
+
+        # Create the basketball court
+        basketball_hoop = Circle((0,0), radius=9, color='black', linewidth=2, fill=False)
+        paint_outer = Rectangle((-80, -47.5), 160, 190, linewidth=2, color='black', fill=False)
+        paint_inner = Rectangle((-60, -47.5), 120, 190, linewidth=2, color='black', fill=False)
+
+        center_court_outer = Arc((0, 422.5), 120, 120,theta1=180, theta2=0, linewidth=2, color='black')
+        center_court_inner = Arc((0, 422.5), 40, 40, theta1=180, theta2=0, linewidth=2, color='black')
+        out_lines = Rectangle((-250, -47.5), 500, 470, linewidth=2, color='black', fill=False)
+
+        full_court = [basketball_hoop, paint_inner, paint_outer, center_court_inner, center_court_outer]
+
+        for element in full_court:
+            ax.add_patch(element)
+
+        return ax

@@ -32,7 +32,7 @@ class ShotChart(object):
         plt.figure(figsize=(12, 11))
         plt.scatter(data_frame.LOC_X, data_frame.LOC_Y)
         self.draw_court()
-        plt.ylim(422.5, -47.5)
+        plt.xlim(-300, 300)
         plt.show()
 
     def get_shot_data(self):
@@ -50,12 +50,26 @@ class ShotChart(object):
         basketball_hoop = Circle((0,0), radius=9, color='black', linewidth=2, fill=False)
         paint_outer = Rectangle((-80, -47.5), 160, 190, linewidth=2, color='black', fill=False)
         paint_inner = Rectangle((-60, -47.5), 120, 190, linewidth=2, color='black', fill=False)
+        freethrow_arc =  Arc((0, 142.5), 120, 120, theta1=0, theta2=180,
+                             linewidth=2, color='black', fill=False)
+        bottom_freethrowarc = Arc((0, 142.5), 120, 120, theta1=180, theta2=0,
+                                linewidth=2, color='black', linestyle='dashed')
 
+        restricted_zone = Arc((0, 0), 80, 80, theta1=0, theta2=180, linewidth=2,
+                         color='black')
         center_court_outer = Arc((0, 422.5), 120, 120,theta1=180, theta2=0, linewidth=2, color='black')
         center_court_inner = Arc((0, 422.5), 40, 40, theta1=180, theta2=0, linewidth=2, color='black')
-        out_lines = Rectangle((-250, -47.5), 500, 470, linewidth=2, color='black', fill=False)
+        out_lines = Rectangle((-250, -47.5), 510, 470, linewidth=2, color='black', fill=False)
 
-        full_court = [basketball_hoop, paint_inner, paint_outer, center_court_inner, center_court_outer]
+
+        backboard = Rectangle((-27, -7.5), 60, 1, linewidth=2, color='black')
+
+        threepoint_arc = Arc((0, 0), 475, 475, theta1=22, theta2=158, linewidth=2, color='black')
+        right_corner = Rectangle((-220, -47,5), 0, 140, linewidth=2, color='black')
+        left_corner = Rectangle((220, -47,5), 0, 140, linewidth=2, color='black')
+
+        full_court = [freethrow_arc, restricted_zone, bottom_freethrowarc,  basketball_hoop,
+                      paint_inner, paint_outer, backboard, center_court_inner, right_corner, left_corner, out_lines, center_court_outer, threepoint_arc]
 
         for element in full_court:
             ax.add_patch(element)

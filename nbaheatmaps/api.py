@@ -2,7 +2,7 @@ import requests
 import pandas
 import matplotlib.pyplot as plt
 import seaborn
-
+import urllib.request
 from matplotlib.patches import Arc, Rectangle, Circle
 
 headers = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 '
@@ -21,7 +21,7 @@ class ShotChart(object):
                 'onSegment=&SeasonType=Regular+Season&TeamID=0&VsConferenc'\
                 'e=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&sh'\
                 'owZones=0'
-
+        self.player_id = player_id
         self.response = requests.get(self.url, headers=headers)
         self.json_data = self.response.json()
         seaborn.set_style("white")
@@ -32,6 +32,7 @@ class ShotChart(object):
         plt.figure(figsize=(12, 11))
         plt.scatter(data_frame.LOC_X, data_frame.LOC_Y)
         self.draw_court()
+        self.get_image(self.player_id)
         plt.xlim(-300, 300)
         plt.show()
 
@@ -75,3 +76,9 @@ class ShotChart(object):
             ax.add_patch(element)
 
         return ax
+
+    def get_image(self, player_id):
+        image = urllib.request.urlretrieve("http://stats.nba.com/media/players/230x185/" + str(player_id) + ".png",
+                                 str(player_id) + ".png")
+        player_image = plt.imread(image[0])
+        plt.imshow(player_image)
